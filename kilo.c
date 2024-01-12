@@ -30,7 +30,8 @@ enum editorKey {
   HOME_KEY,
   END_KEY,
   PAGE_UP,
-  PAGE_DOWN
+  PAGE_DOWN,
+  BACKSPACE = 127
 };
 
 /*** data ***/
@@ -372,6 +373,10 @@ void editorProcessKeypress(void) {
   int c = editorReadKey();
 
   switch (c) {
+    case '\r':
+      /* TODO */
+      break;
+
     case CTRL_KEY('q'):
       write(STDOUT_FILENO, "\x1b[2J", 4);
       write(STDOUT_FILENO, "\x1b[H", 3);
@@ -385,6 +390,12 @@ void editorProcessKeypress(void) {
     case END_KEY:
       if (E.cy < E.numrows)
         E.cx = E.row[E.cy].size;
+      break;
+
+    case BACKSPACE:
+    case CTRL_KEY('h'):
+    case DEL_KEY:
+      /* TODO */
       break;
 
     case PAGE_UP:
@@ -408,6 +419,10 @@ void editorProcessKeypress(void) {
     case ARROW_LEFT:
     case ARROW_RIGHT:
       editorMoveCursor(c);
+      break;
+
+    case CTRL_KEY('l'):
+    case '\x1b':
       break;
 
     default:
